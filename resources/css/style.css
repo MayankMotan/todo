@@ -30,7 +30,7 @@ header {
 }
 
 header input {
-  width: 100%;
+  width: 33%;
   height: 50px;
   float: left;
   color: #fff;
@@ -131,6 +131,7 @@ ul.todo li {
 ul.todo li:last-of-type {
   margin: 0;
 }
+
 
 ul.todo li .buttons {
   width: 100px;

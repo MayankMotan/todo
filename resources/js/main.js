@@ -13,9 +13,13 @@ renderTodoList();
 // User clicked on the add button
 // If there is any text inside the item field, add that text to the todo list
 document.getElementById('add').addEventListener('click', function() {
-  var value = document.getElementById('item').value;
-  if (value) {
-    addItem(value);
+  var taskName = document.getElementById('item').value;
+  var projectName = document.getElementById('item1').value;
+  var taskDate = document.getElementById('item2').value;
+
+  var todo = { "taskName": taskName, "projectName": projectName,	"taskDate": taskDate }
+  if (todo) {
+    addItem(todo);
   }
 });
 
@@ -26,11 +30,13 @@ document.getElementById('item').addEventListener('keydown', function (e) {
   }
 });
 
-function addItem (value) {
-  addItemToDOM(value);
+function addItem (todo) {
+  addItemToDOM(todo);
   document.getElementById('item').value = '';
+  document.getElementById('item1').value = '';
+  document.getElementById('item2').value = '';
 
-  data.todo.push(value);
+  data.todo.push(todo);
   dataObjectUpdated();
 }
 
@@ -38,13 +44,13 @@ function renderTodoList() {
   if (!data.todo.length && !data.completed.length) return;
 
   for (var i = 0; i < data.todo.length; i++) {
-    var value = data.todo[i];
-    addItemToDOM(value);
+    var todo = data.todo[i];
+    addItemToDOM(todo);
   }
 
   for (var j = 0; j < data.completed.length; j++) {
-    var value = data.completed[j];
-    addItemToDOM(value, true);
+    var todoCompleted = data.completed[j];
+    addItemToDOM(todoCompleted, true);
   }
 }
 
@@ -72,14 +78,15 @@ function completeItem() {
   var item = this.parentNode.parentNode;
   var parent = item.parentNode;
   var id = parent.id;
-  var value = item.innerText;
+  var childNodes = item.childNodes[0].childNodes;//childNodes.innerText;
+  var todo = { "taskName": childNodes[0].innerText, "projectName": childNodes[1].innerText,	"taskDate": childNodes[2].innerText }
 
   if (id === 'todo') {
-    data.todo.splice(data.todo.indexOf(value), 1);
-    data.completed.push(value);
+    data.todo.splice(data.todo.indexOf(todo), 1);
+    data.completed.push(todo);
   } else {
-    data.completed.splice(data.completed.indexOf(value), 1);
-    data.todo.push(value);
+    data.completed.splice(data.completed.indexOf(todo), 1);
+    data.todo.push(todo);
   }
   dataObjectUpdated();
 
@@ -91,11 +98,28 @@ function completeItem() {
 }
 
 // Adds a new item to the todo list
-function addItemToDOM(text, completed) {
+function addItemToDOM(todo, completed) {
   var list = (completed) ? document.getElementById('completed'):document.getElementById('todo');
 
   var item = document.createElement('li');
-  item.innerText = text;
+  //item.innerText = todo.taskName +" "+ todo.projectName +" "+ todo.taskDate;
+  var inputs = document.createElement('div');
+  inputs.classList.add('inputs');
+
+  var taskNameInput = document.createElement('h4');
+  taskNameInput.innerText = todo.taskName;
+  
+  var projectNameInput = document.createElement('h4');
+  projectNameInput.innerText = todo.projectName;
+
+  var taskDateInput = document.createElement('h4');
+  taskDateInput.innerText = todo.taskDate;
+
+  inputs.appendChild(taskNameInput);
+  inputs.appendChild(projectNameInput);
+  inputs.appendChild(taskDateInput);
+
+  item.appendChild(inputs);
 
   var buttons = document.createElement('div');
   buttons.classList.add('buttons');
