@@ -10,4 +10,5 @@ A simple todo list app built in HTML, CSS and JavaScript.
 
 > Added html5 date picker
 
-
+ToDo UI
+![alt text](https://github.com/MayankMotan/todo/blob/master/ToDo-Screenshot.PNG?raw=true)
